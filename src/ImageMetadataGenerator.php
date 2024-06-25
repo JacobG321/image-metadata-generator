@@ -3,7 +3,7 @@
 namespace JacobGruber\ImageMetadataGenerator;
 
 /**
- * Main class for the Image Metadata Generator plugin.
+ * Main class
  */
 class ImageMetadataGenerator
 {
@@ -114,7 +114,6 @@ class ImageMetadataGenerator
 
         wp_enqueue_script('image-metadata-generator-script', plugin_dir_url(__DIR__) . 'assets/js/image-metadata-generator.js', ['jquery', 'jquery-ui-dialog'], '1.0', true);
 
-        error_log(plugin_dir_url(__DIR__) . 'assets/js/image-metadata-generator.js');
         wp_enqueue_style('image-metadata-generator-style', plugin_dir_url(__DIR__) . 'assets/css/image-metadata-generator.css');
 
 
