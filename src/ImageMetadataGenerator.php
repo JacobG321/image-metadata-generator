@@ -15,7 +15,7 @@ class ImageMetadataGenerator
         add_action('admin_menu', [__CLASS__, 'add_admin_menu']);
         add_action('admin_init', [__CLASS__, 'settings_init']);
         add_action('admin_enqueue_scripts', [__CLASS__, 'enqueue_scripts']);
-        add_action('attachment_submitbox_misc_actions', [__CLASS__, 'add_generate_metadata_button']);
+        add_action('add_meta_boxes', [__CLASS__, 'add_custom_meta_box']);
         add_action('admin_footer', [__CLASS__, 'add_dialog_box_html']);
 
         AjaxHandler::init();
@@ -126,14 +126,26 @@ class ImageMetadataGenerator
 
 
     /**
-     * Add "Generate New Metadata" button to media edit page.
+     * Add a custom metabox.
      */
-    public static function add_generate_metadata_button()
+    public static function add_custom_meta_box()
     {
-        global $post;
-        if ($post->post_type == 'attachment') {
-            echo '<button id="generate-metadata-button" class="button button-primary">Generate New Metadata</button>';
-        }
+        add_meta_box(
+            'generate_metadata_meta_box',
+            'Generate Metadata',
+            [__CLASS__, 'render_meta_box_content'],
+            'attachment',
+            'side',
+            'high'
+        );
+    }
+
+    /**
+     * Render the content of the metabox.
+     */
+    public static function render_meta_box_content($post)
+    {
+        echo '<button id="generate-metadata-button" class="button button-primary">Generate New Metadata</button>';
     }
 
     /**
@@ -166,7 +178,7 @@ class ImageMetadataGenerator
                 </form>
                 <div id="generate-metadata-results" style="display:none;"></div>
             </div>
-<?php
+        <?php
         }
     }
 }
