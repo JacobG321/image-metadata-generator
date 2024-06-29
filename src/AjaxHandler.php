@@ -59,22 +59,11 @@ class AjaxHandler {
             $metadata_comma_separated = implode(", ", $metadata);
             $metadata_comma_separated_dash_removed = str_replace("-", " ", $metadata_comma_separated);
 
-            $text = "Please create a ";
-            $text .= $metadata_comma_separated_dash_removed;
-            $text .= " for this image file currently called '{$original_file_name}'.";
-            $text .= " The new image file name should contain the original file type.";
-            $text .= " Please make sure the ";
-            $text .= $metadata_comma_separated;
-            $text .= " are unique, concise, accurate, and descriptive.";
-            $text .= " Our goal is to provide helpful and descriptive information to our website's users and search engine crawlers about the content in these images.";
+            $text = "Please create a {$metadata_comma_separated_dash_removed} for this image file currently called '{$original_file_name}'. The new image file name should contain the original file type. Please make sure the {$metadata_comma_separated_dash_removed} are unique, concise, accurate, and descriptive. Our goal is to provide helpful and descriptive information to our website's users and search engine crawlers about the content in these images.";
             if (in_array("alt text", $metadata)){
                 $text .= " Please make sure the alt text is at least 80 characters, but LESS than 100 characters total.";
             }
-            $text .= " Please provide the ";
-            $text .= $metadata_comma_separated_dash_removed;
-            $text .= " in a JSON format with the following keys: ";
-            $text .= $metadata_comma_separated;
-            $text .= ". Here is the image:";
+            $text .= " Please provide the {$metadata_comma_separated_dash_removed} in a JSON format with the following keys: {$metadata_comma_separated}. Here is the image:";
 
             error_log($text);
             
@@ -93,7 +82,7 @@ class AjaxHandler {
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => "Please create alt text, title, caption, and a file name for this image file currently called '{$original_file_name}'. The new image file name should contain the original file type. Please make sure the alt text, file name, caption, and title are unique, concise, accurate, and descriptive. Our goal is to provide helpful and descriptive information to our website's users and search engine crawlers about the content in these images. Please make sure the alt text is at least 80 characters, but LESS than 100 characters total. Please provide the alt text, title, and new image file name in a JSON format with the following keys: alt_text, title, file_name, and caption. Here is the image:",
+                            'text' => $text,
                         ],
                         [
                             'type' => 'image_url',
