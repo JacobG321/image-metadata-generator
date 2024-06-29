@@ -2,8 +2,8 @@
 /*
 Plugin Name: Image Metadata Generator
 Plugin URI: https://github.com/JacobG321/image-metadata-generator
-Description: A plugin that generates metadata for images.
-Version: 0.0.2
+Description: A plugin that generates metadata for imagess using OpenAI's API, and ChatGPT 4o.
+Version: 0.0.4
 Author: Jacob Gruber
 Author URI: https://jgruber.dev
 */

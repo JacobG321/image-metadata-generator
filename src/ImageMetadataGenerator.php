@@ -114,7 +114,8 @@ class ImageMetadataGenerator
 
         wp_localize_script('image-metadata-generator-script', 'imageMetadataGenerator', [
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('generate_metadata_nonce'),
+            'generate_nonce' => wp_create_nonce('generate_metadata_nonce'),
+            'update_nonce' => wp_create_nonce('update_metadata_nonce'),
             'attachment_id' => $post->ID,
         ]);
     }
