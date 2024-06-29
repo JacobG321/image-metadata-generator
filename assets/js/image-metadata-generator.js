@@ -147,9 +147,6 @@ jQuery(document).ready(function ($) {
       case "caption":
         $("#attachment_caption").val(value);
         break;
-      case "description":
-        $("#attachment_content").val(value);
-        break;
     }
   }
 });

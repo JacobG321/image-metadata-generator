@@ -7,15 +7,12 @@ namespace JacobGruber\ImageMetadataGenerator;
  */
 class ImageMetadataGenerator
 {
-    /**
-     * Initialize the plugin.
-     */
     public static function init()
     {
         add_action('admin_menu', [__CLASS__, 'add_admin_menu']);
         add_action('admin_init', [__CLASS__, 'settings_init']);
         add_action('admin_enqueue_scripts', [__CLASS__, 'enqueue_scripts']);
-        add_action('add_meta_boxes', [__CLASS__, 'add_custom_meta_box']);
+        add_action('add_meta_boxes', [__CLASS__, 'generate_metadata_meta_box']);
         add_action('admin_footer', [__CLASS__, 'add_dialog_box_html']);
 
         AjaxHandler::init();
@@ -37,7 +34,7 @@ class ImageMetadataGenerator
     }
 
     /**
-     * Initialize plugin settings.
+     *  Plugin settings.
      */
     public static function settings_init()
     {
@@ -60,7 +57,7 @@ class ImageMetadataGenerator
     }
 
     /**
-     * Render the API key input field.
+     * API key field.
      */
     public static function api_key_render()
     {
@@ -72,16 +69,13 @@ class ImageMetadataGenerator
     }
 
     /**
-     * Render the settings section description.
+     * Settings section description.
      */
     public static function settings_section_callback()
     {
         echo __('Enter your OpenAI API key here.', 'image-metadata-generator');
     }
 
-    /**
-     * Render the options page.
-     */
     public static function options_page()
     {
     ?>
@@ -103,7 +97,8 @@ class ImageMetadataGenerator
     public static function enqueue_scripts($hook)
     {
         // Enqueue only on the media editing page
-        if ('post.php' != $hook || get_post_type() != 'attachment') {
+        $post_type = self::get_current_post_type();
+        if ('post.php' !== $hook || $post_type !== 'attachment') {
             return;
         }
 
@@ -124,11 +119,7 @@ class ImageMetadataGenerator
         ]);
     }
 
-
-    /**
-     * Add a custom metabox.
-     */
-    public static function add_custom_meta_box()
+    public static function generate_metadata_meta_box()
     {
         add_meta_box(
             'generate_metadata_meta_box',
@@ -141,20 +132,38 @@ class ImageMetadataGenerator
     }
 
     /**
-     * Render the content of the metabox.
+     * Render metabox.
      */
     public static function render_meta_box_content($post)
     {
         echo '<button id="generate-metadata-button" class="button button-primary">Generate New Metadata</button>';
     }
 
+
+    public static function get_current_post_type() {
+	
+        global $post, $typenow, $current_screen;
+        
+        if ($post && $post->post_type) return $post->post_type;
+        
+        elseif($typenow) return $typenow;
+        
+        elseif($current_screen && $current_screen->post_type) return $current_screen->post_type;
+        
+        elseif(isset($_REQUEST['post_type'])) return sanitize_key($_REQUEST['post_type']);
+        
+        return null;
+        
+    }
+
+
     /**
      * Add dialog box HTML to the footer.
      */
     public static function add_dialog_box_html()
     {
-        global $post;
-        if ($post->post_type == 'attachment') {
+        $post_type = self::get_current_post_type();
+        if ($post_type == 'attachment') {
         ?>
             <div id="generate-metadata-dialog" title="Generate New Metadata" style="display:none;">
                 <p>Select the image metadata you want to generate new data for:</p>
@@ -170,7 +179,7 @@ class ImageMetadataGenerator
                         <input type="checkbox" name="metadata[]" value="alt"> Alt Text
                     </label><br>
                     <label>
-                        <input type="checkbox" name="metadata[]" value="description"> Description
+                        <input type="checkbox" name="metadata[]" value="file-name"> File Name
                     </label><br>
                     <label>
                         <input type="checkbox" name="metadata[]" value="caption"> Caption
