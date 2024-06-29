@@ -25,6 +25,12 @@ jQuery(document).ready(function ($) {
             },
             success: function (response) {
               if (response.success) {
+
+                $("#generate-metadata-form input").prop("checked", false); // Uncheck all checkboxes
+
+                $("#generate-metadata-generate-button").button("disable");
+                $("#keep-all-metadata").button("enable");
+
                 // Display the generated metadata in the dialog box
                 var metadata = response.data.metadata;
                 var resultsHtml = "<p>Generated Metadata:</p><ul>";
@@ -82,6 +88,7 @@ jQuery(document).ready(function ($) {
       "Keep All": {
         text: "Keep All",
         id: "keep-all-metadata",
+        disabled: true,
         click: function () {
           $("#generate-metadata-results ul li").each(function () {
             var key = $(this).find(".keep-metadata").data("key");
@@ -95,7 +102,6 @@ jQuery(document).ready(function ($) {
             updateMetadataField(key, value);
           });
         },
-        disabled: false,
       },
       Cancel: function () {
         $(this).dialog("close");
@@ -110,7 +116,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Enable/Disable the Generate button based on checkbox selection
-  $("#generate-metadata-form input").on("change", function () {
+  $("#generate-metadata-form input").on('change', function () {
     var isChecked = $("#generate-metadata-form input:checked").length > 0;
     $("#generate-metadata-generate-button").button(
       isChecked ? "enable" : "disable"
@@ -146,6 +152,9 @@ jQuery(document).ready(function ($) {
         break;
       case "caption":
         $("#attachment_caption").val(value);
+        break;
+      case "file_name":
+        $("#attachment_filename").val(value);
         break;
     }
   }

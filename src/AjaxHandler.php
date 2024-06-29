@@ -127,6 +127,14 @@ class AjaxHandler {
         // $generated_metadata = json_decode($generated_content, true);
         // error_log(print_r($generated_metadata, true));
 
-        // wp_send_json_success(['message' => 'Metadata generated successfully.', 'metadata' => $generated_metadata]);
+        $generated_metadata = [
+            'title' => 'Generated Title',
+            'description' => 'Generated Description',
+            'alt_text' => 'Generated Alt Text',
+            'caption' => 'Generated Caption',
+            'file_name' => 'Generated File Name',
+        ];
+
+        wp_send_json_success(['message' => 'Metadata generated successfully.', 'metadata' => $generated_metadata]);
     }
 }
